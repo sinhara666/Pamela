@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pamela Greer — AI Starter Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c28;--border:#2a2a3d;--accent:#a78bfa;--accent2:#c4b5fd;--accent3:#51cf66;--text:#e8e8f0;--muted:#6b6b8a;--green:#51cf66;--font-display:'Syne',sans-serif;--font-mono:'Space Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-display);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(167,139,250,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(167,139,250,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:24px 16px;}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+.logo-block h1{font-size:22px;font-weight:800;}
+.logo-block h1 span{color:var(--accent);}
+.logo-block p{font-size:11px;color:var(--muted);font-family:var(--font-mono);margin-top:2px;letter-spacing:1px;text-transform:uppercase;}
+.date-block{text-align:right;font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.date-block .time{font-size:24px;color:var(--accent);font-weight:700;display:block;line-height:1;margin-bottom:4px;}
+.tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--border);overflow-x:auto;}
+.tab{padding:8px 16px;font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s;white-space:nowrap;}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.api-banner{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.api-banner label{font-size:11px;font-family:var(--font-mono);color:var(--muted);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
+.api-banner input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-family:var(--font-mono);font-size:12px;outline:none;min-width:180px;}
+.btn-save{background:var(--accent);color:#0a0a0f;border:none;border-radius:6px;padding:8px 16px;font-family:var(--font-mono);font-size:11px;cursor:pointer;font-weight:700;}
+.api-status{font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:4px;white-space:nowrap;}
+.api-status.ok{background:rgba(81,207,102,0.15);color:var(--green);}
+.api-status.missing{background:rgba(255,107,107,0.15);color:#ff6b6b;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;}
+.card h3{font-size:14px;font-weight:700;color:var(--accent);margin-bottom:12px;}
+textarea,select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);font-family:var(--font-display);font-size:13px;outline:none;margin-bottom:12px;}
+textarea{resize:vertical;min-height:80px;line-height:1.5;}
+select{font-family:var(--font-mono);font-size:12px;}
+textarea::placeholder{color:var(--muted);font-size:12px;}
+.btn-gen{width:100%;background:linear-gradient(135deg,#a78bfa,#7c3aed);border:none;border-radius:10px;padding:14px;color:#fff;font-family:var(--font-display);font-size:14px;font-weight:700;cursor:pointer;margin-bottom:12px;transition:opacity 0.2s;}
+.btn-gen:hover{opacity:0.88;}
+.btn-gen:disabled{opacity:0.5;cursor:not-allowed;}
+.output{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:13px;line-height:1.8;color:var(--text);min-height:80px;white-space:pre-wrap;word-break:break-word;}
+.copy-btn{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 14px;color:var(--muted);font-family:var(--font-mono);font-size:10px;cursor:pointer;float:right;margin-bottom:8px;}
+.copy-btn:hover{color:var(--accent);border-color:var(--accent);}
+label.fl{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;display:block;margin-bottom:6px;}
+.learn-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;padding:16px;margin-bottom:12px;}
+.learn-card h4{font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:8px;}
+.learn-card p{font-size:12px;color:#a0a0b8;line-height:1.7;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="logo-block">
+      <h1>Pamela <span>Greer</span></h1>
+      <p>// AI Starter Hub · United Kingdom (GMT)</p>
+    </div>
+    <div class="date-block">
+      <span class="time" id="clock">--:--</span>
+      <span id="dateStr">--</span>
+    </div>
+  </div>
+
+  <div class="api-banner">
+    <label>🔑 Groq Key</label>
+    <input type="password" id="apiKey" placeholder="gsk_...">
+    <button class="btn-save" onclick="saveKey()">Save</button>
+    <span class="api-status missing" id="apiStatus">No key</span>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('learn')">Learn</div>
+    <div class="tab" onclick="switchTab('write')">AI Writer</div>
+    <div class="tab" onclick="switchTab('ask')">Ask AI</div>
+    <div class="tab" onclick="switchTab('notes')">Notes</div>
+  </div>
+
+  <div class="tab-panel active" id="tab-learn">
+    <div class="learn-card"><h4>👋 Welcome Pamela!</h4><p>This is your personal AI hub — built just for you by the Run AI Free & Offline community. Add your free Groq key above to activate your AI tools.</p></div>
+    <div class="learn-card"><h4>🔑 Step 1 — Get Your Free Key</h4><p>Go to console.groq.com → Sign up free → Create API Key → Paste it above. No credit card needed.</p></div>
+    <div class="learn-card"><h4>🤖 What is AI?</h4><p>AI (Artificial Intelligence) is software that can understand language and help you write, research, plan, and create. Think of it as a very smart assistant available 24/7 for free.</p></div>
+    <div class="learn-card"><h4>💡 What can you do here?</h4><p>Write emails, get answers to questions, create content, brainstorm ideas — all free, all private, all running on your device.</p></div>
+  </div>
+
+  <div class="tab-panel" id="tab-write">
+    <div class="card">
+      <h3>✍️ AI Writing Helper</h3>
+      <label class="fl">What do you want to write?</label>
+      <select id="writeType">
+        <option>A professional email</option>
+        <option>A social media post</option>
+        <option>A letter</option>
+        <option>A product description</option>
+        <option>A short bio about myself</option>
+        <option>A thank you note</option>
+      </select>
+      <label class="fl">Tell me more (optional)</label>
+      <textarea id="writeContext" placeholder="Any details to include? Who is it for? What's the topic?"></textarea>
+      <button class="btn-gen" id="writeBtn" onclick="generateWrite()">✨ Write It</button>
+      <button class="copy-btn" onclick="copyOut('writeOut')">Copy</button>
+      <div class="output" id="writeOut">Your writing will appear here...</div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-ask">
+    <div class="card">
+      <h3>💬 Ask Anything</h3>
+      <label class="fl">Your question</label>
+      <textarea id="askQ" placeholder="Ask anything — about AI, technology, business, life... no question is too basic!"></textarea>
+      <button class="btn-gen" id="askBtn" onclick="askAI()">🤔 Get Answer</button>
+      <button class="copy-btn" onclick="copyOut('askOut')">Copy</button>
+      <div class="output" id="askOut">Your answer will appear here...</div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-notes">
+    <div class="card">
+      <h3>📝 My Notes</h3>
+      <textarea id="noteText" placeholder="Jot down ideas, things you learned, questions to ask..."></textarea>
+      <button class="btn-gen" onclick="saveNote()">Save Note</button>
+      <div id="notesList" style="margin-top:12px;display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+  </div>
+</div>
+<script>
+function xorStr(a,b){let o='';for(let i=0;i<a.length;i++)o+=String.fromCharCode(a.charCodeAt(i)^b.charCodeAt(i%b.length));return o;}
+function saveKey(){const k=document.getElementById('apiKey').value.trim();if(!k)return;localStorage.setItem('pam_bk',xorStr(k,'SINSTUDIO'));document.getElementById('apiStatus').textContent='✓ Ready';document.getElementById('apiStatus').className='api-status ok';}
+function getKey(){const r=localStorage.getItem('pam_bk');return r?xorStr(r,'SINSTUDIO'):'';}
+window.onload=()=>{if(localStorage.getItem('pam_bk')){document.getElementById('apiStatus').textContent='✓ Ready';document.getElementById('apiStatus').className='api-status ok';}updateClock();setInterval(updateClock,1000);loadNotes();}
+function updateClock(){const n=new Date();const uk=new Date(n.toLocaleString('en-US',{timeZone:'Europe/London'}));document.getElementById('clock').textContent=uk.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});document.getElementById('dateStr').textContent=uk.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'})+' · GMT';}
+function switchTab(t){document.querySelectorAll('.tab').forEach((el,i)=>{const tabs=['learn','write','ask','notes'];el.classList.toggle('active',tabs[i]===t);});document.querySelectorAll('.tab-panel').forEach(p=>{p.classList.toggle('active',p.id==='tab-'+t);});}
+function copyOut(id){navigator.clipboard.writeText(document.getElementById(id).textContent);}
+async function callGroq(prompt){const key=getKey();if(!key){alert('Add your Groq key first!');return null;}const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'user',content:prompt}],max_tokens:600})});const d=await r.json();if(!r.ok)throw new Error(d.error?.message||'Error');return d.choices[0].message.content;}
+async function generateWrite(){const type=document.getElementById('writeType').value;const ctx=document.getElementById('writeContext').value;const btn=document.getElementById('writeBtn');btn.disabled=true;btn.textContent='Writing...';try{const out=await callGroq(`Write ${type}. ${ctx?'Details: '+ctx:''} Make it polished, clear and ready to use.`);document.getElementById('writeOut').textContent=out;}catch(e){document.getElementById('writeOut').textContent='Error: '+e.message;}btn.disabled=false;btn.textContent='✨ Write It';}
+async function askAI(){const q=document.getElementById('askQ').value;if(!q){alert('Type your question');return;}const btn=document.getElementById('askBtn');btn.disabled=true;btn.textContent='Thinking...';try{const out=await callGroq(`Answer this clearly and helpfully for someone learning about AI: ${q}`);document.getElementById('askOut').textContent=out;}catch(e){document.getElementById('askOut').textContent='Error: '+e.message;}btn.disabled=false;btn.textContent='🤔 Get Answer';}
+function saveNote(){const t=document.getElementById('noteText').value.trim();if(!t)return;const notes=JSON.parse(localStorage.getItem('pam_notes')||'[]');notes.unshift({text:t,date:new Date().toLocaleDateString()});localStorage.setItem('pam_notes',JSON.stringify(notes));document.getElementById('noteText').value='';renderNotes(notes);}
+function loadNotes(){renderNotes(JSON.parse(localStorage.getItem('pam_notes')||'[]'));}
+function renderNotes(notes){document.getElementById('notesList').innerHTML=notes.map((n,i)=>`<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:10px;color:var(--muted);font-family:var(--font-mono);">${n.date}</span><button onclick="delNote(${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;">×</button></div><div style="font-size:13px;line-height:1.6;">${n.text}</div></div>`).join('');}
+function delNote(i){const notes=JSON.parse(localStorage.getItem('pam_notes')||'[]');notes.splice(i,1);localStorage.setItem('pam_notes',JSON.stringify(notes));renderNotes(notes);}
+</script>
+</body>
+</html>
